@@ -1,3 +1,4 @@
+%{?_javapackages_macros:%_javapackages_macros}
 Name: apache-sshd
 Version: 0.11.0
 Release: 2%{?dist}
