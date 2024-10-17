@@ -4,7 +4,7 @@ Version: 0.11.0
 Release: 2%{?dist}
 Summary: Apache SSHD
 License: ASL 2.0
-URL: http://mina.apache.org/sshd-project/
+URL: https://mina.apache.org/sshd-project/
 
 Source0: http://www.apache.org/dist/mina/sshd/%{version}/%{name}-%{version}-src.tar.gz
 
