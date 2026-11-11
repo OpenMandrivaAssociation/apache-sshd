@@ -1,0 +1,41 @@
+--- a/sshd-core/src/main/java/org/apache/sshd/agent/local/ProxyAgentFactory.java
++++ b/sshd-core/src/main/java/org/apache/sshd/agent/local/ProxyAgentFactory.java
+@@ -27,8 +27,6 @@
+ import org.apache.sshd.agent.SshAgent;
+ import org.apache.sshd.agent.SshAgentFactory;
+ import org.apache.sshd.agent.SshAgentServer;
+-import org.apache.sshd.agent.unix.AprLibrary;
+-import org.apache.sshd.agent.unix.UnixAgentFactory;
+ import org.apache.sshd.common.FactoryManager;
+ import org.apache.sshd.common.PropertyResolver;
+ import org.apache.sshd.common.channel.ChannelFactory;
+@@ -51,9 +49,9 @@
+ 
+     @Override
+     public List<ChannelFactory> getChannelForwardingFactories(FactoryManager manager) {
+-        return isPreferredUnixAgent(manager)
+-                ? UnixAgentFactory.DEFAULT_FORWARDING_CHANNELS
+-                : LocalAgentFactory.DEFAULT_FORWARDING_CHANNELS;
++        // tomcat-apr JNI wrappers are not packaged. The NIO agent is the fallback
++        // upstream already uses when AprLibrary.getInstance() is null.
++        return LocalAgentFactory.DEFAULT_FORWARDING_CHANNELS;
+     }
+ 
+     @Override
+@@ -104,16 +102,6 @@
+     }
+ 
+     public static boolean isPreferredUnixAgent(PropertyResolver resolver) {
+-        if (CoreModuleProperties.PREFER_UNIX_AGENT.getRequired(resolver)) {
+-            try {
+-                if (AprLibrary.getInstance() != null) {
+-                    return true;
+-                }
+-            } catch (Exception ignore) {
+-                // ignored
+-            }
+-        }
+-
+         return false;
+     }
+ }
